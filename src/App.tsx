@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { fetchMovies, type Movie } from "./api";
 import Search from "./components/Search";
 import Spinner from "./components/Spinner";
+import MovieCard from "./components/MovieCard";
 
 export default function App() {
   //
@@ -57,7 +58,7 @@ export default function App() {
           <ul className="text-white">
             {movieList.map((movie) => (
               <li key={movie.id}>
-                <h3>{movie.title}</h3>
+                <MovieCard movie={movie} />
               </li>
             ))}
           </ul>
