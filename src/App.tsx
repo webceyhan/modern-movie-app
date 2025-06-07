@@ -4,6 +4,7 @@ import { fetchMovies, type Movie } from "./api";
 import Search from "./components/Search";
 import Spinner from "./components/Spinner";
 import MovieCard from "./components/MovieCard";
+import { updateSearchCount } from "./appwrite";
 
 export default function App() {
   //
@@ -25,6 +26,13 @@ export default function App() {
     try {
       const data = await fetchMovies(debouncedSearchTerm);
       setMovieList(data.results);
+
+      // If the search term is not empty and no results are found,
+      // update the search count in Appwrite to track searches
+      // which will help in improving the search experience
+      if(debouncedSearchTerm && data.results.length > 0) {
+        await updateSearchCount(debouncedSearchTerm, data.results[0]);
+      }
     } catch (error) {
       setMovieList([]);
       setErrorMessage("Failed to fetch movies. Please try again later.");
