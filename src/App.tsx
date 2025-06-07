@@ -17,7 +17,7 @@ export default function App() {
     setErrorMessage("");
 
     try {
-      const data = await fetchMovies();
+      const data = await fetchMovies(searchTerm);
       setMovieList(data.results);
     } catch (error) {
       setMovieList([]);
@@ -30,7 +30,7 @@ export default function App() {
   useEffect(() => {
     // Load movies when the component mounts
     loadMovies();
-  }, []);
+  }, [searchTerm]);
 
   return (
     <main>

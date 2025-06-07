@@ -34,8 +34,10 @@ type Response = {
   total_results: number;
 };
 
-export const fetchMovies = async (): Promise<Response> => {
-  const url = `${API_BASE_URL}/discover/movie?sort_by=popularity.desc`;
+export const fetchMovies = async (query?: string): Promise<Response> => {
+  const url = query
+    ? `${API_BASE_URL}/search/movie?query=${encodeURIComponent(query)}`
+    : `${API_BASE_URL}/discover/movie?sort_by=popularity.desc`;
 
   const response = await fetch(url, API_OPTIONS);
 
