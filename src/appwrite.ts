@@ -52,3 +52,24 @@ export const updateSearchCount = async (searchTerm: string, movie: Movie) => {
     console.error(error);
   }
 };
+
+export type TrendingMovie = {
+  $id: string;
+  searchTerm: string;
+  count: number;
+  movie_id: number;
+  poster_url: string;
+};
+
+export const getTrendingMovies = async (): Promise<TrendingMovie[]> => {
+  try {
+    const result = await listDocuments([
+      Query.limit(5),
+      Query.orderDesc("count"),
+    ]);
+
+    return result.documents as any;
+  } catch (error) {
+    throw new Error(error as string);
+  }
+};

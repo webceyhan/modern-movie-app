@@ -4,7 +4,11 @@ import { fetchMovies, type Movie } from "./api";
 import Search from "./components/Search";
 import Spinner from "./components/Spinner";
 import MovieCard from "./components/MovieCard";
-import { updateSearchCount } from "./appwrite";
+import {
+  getTrendingMovies,
+  updateSearchCount,
+  type TrendingMovie,
+} from "./appwrite";
 
 export default function App() {
   //
@@ -12,6 +16,7 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [movieList, setMovieList] = useState<Movie[]>([]);
+  const [trendingMovies, setTrendingMovies] = useState<TrendingMovie[]>([]);
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState(searchTerm);
 
   // Debounce the search term to avoid too many API calls
@@ -30,14 +35,24 @@ export default function App() {
       // If the search term is not empty and no results are found,
       // update the search count in Appwrite to track searches
       // which will help in improving the search experience
-      if(debouncedSearchTerm && data.results.length > 0) {
+      if (debouncedSearchTerm && data.results.length > 0) {
         await updateSearchCount(debouncedSearchTerm, data.results[0]);
       }
     } catch (error) {
       setMovieList([]);
-      setErrorMessage("Failed to fetch movies. Please try again later.");
+      setErrorMessage("Failed to fetch movies.");
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const loadTrendingMovies = async () => {
+    try {
+      const data = await getTrendingMovies();
+      setTrendingMovies(data);
+    } catch (error) {
+      setTrendingMovies([]);
+      setErrorMessage("Failed to fetch trending movies.");
     }
   };
 
@@ -45,6 +60,11 @@ export default function App() {
     // Load movies when the component mounts
     loadMovies();
   }, [debouncedSearchTerm]);
+
+  useEffect(() => {
+    // Load trending movies when the component mounts
+    loadTrendingMovies();
+  }, []);
 
   return (
     <main>
@@ -61,6 +81,21 @@ export default function App() {
 
           <Search searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
         </header>
+
+        {trendingMovies.length > 0 && (
+          <section className="trending">
+            <h2>Trending Movies</h2>
+
+            <ul>
+              {trendingMovies.map((movie, index) => (
+                <li key={movie.$id}>
+                  <p>{index + 1}</p>
+                  <img src={movie.poster_url} alt={movie.searchTerm} />
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
 
         <section className="all-movies">
           <h2 className="mt-[40px]">All Movies</h2>
