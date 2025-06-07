@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { fetchMovies, type Movie } from "./api";
 import Search from "./components/Search";
+import Spinner from "./components/Spinner";
 
 export default function App() {
   //
@@ -49,7 +50,7 @@ export default function App() {
         <section className="all-movies">
           <h2>All Movies</h2>
 
-          {isLoading && <p className="text-white">Loading...</p>}
+          {isLoading && <Spinner />}
 
           {errorMessage && <p className="error">{errorMessage}</p>}
 
