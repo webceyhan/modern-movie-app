@@ -116,3 +116,12 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - [Tailwind CSS](https://tailwindcss.com/) - A utility-first CSS framework for creating custom designs.
 - [Appwrite](https://appwrite.io/) - The open-source backend server for web, mobile & flutter developers.
 - [TMDb API](https://www.themoviedb.org/documentation/api) - The Movie Database API for movie data.
+
+---
+
+## Credits
+
+This project is based on the YouTube tutorial:
+React JS 19 Full Course 2025 | Build an App and Master React in 2 Hours
+by jsmastery.com
+Watch here: https://www.youtube.com/watch?v=dCLhUialKPQ
