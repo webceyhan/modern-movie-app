@@ -40,7 +40,8 @@ export default function App() {
       }
     } catch (error) {
       setMovieList([]);
-      setErrorMessage("Failed to fetch movies.");
+      setErrorMessage("Failed to fetch movies. Please try again later.");
+      console.error("Error fetching movies:", error);
     } finally {
       setIsLoading(false);
     }
@@ -53,6 +54,7 @@ export default function App() {
     } catch (error) {
       setTrendingMovies([]);
       setErrorMessage("Failed to fetch trending movies.");
+      console.error("Error fetching trending movies:", error);
     }
   };
 
