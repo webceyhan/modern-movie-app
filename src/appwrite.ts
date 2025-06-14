@@ -17,10 +17,10 @@ const db = new Databases(client);
 const listDocuments = (queries: string[]) =>
   db.listDocuments(DATABASE_ID, COLLECTION_ID, queries);
 
-const updateDocument = (documentId: string, data: Record<string, any>) =>
+const updateDocument = <T>(documentId: string, data: Record<string, T>) =>
   db.updateDocument(DATABASE_ID, COLLECTION_ID, documentId, data);
 
-const createDocument = (data: Record<string, any>) =>
+const createDocument = <T>(data: Record<string, T>) =>
   db.createDocument(DATABASE_ID, COLLECTION_ID, ID.unique(), data);
 
 // PUBLIC FUNCTIONS ////////////////////////////////////////////////////////////////////////////////
@@ -68,7 +68,7 @@ export const getTrendingMovies = async (): Promise<TrendingMovie[]> => {
       Query.orderDesc("count"),
     ]);
 
-    return result.documents as any;
+    return result.documents as unknown as TrendingMovie[];
   } catch (error) {
     throw new Error(error as string);
   }
